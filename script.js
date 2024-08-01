@@ -115,14 +115,14 @@ function searchPlaces(query, callback) {
 document.getElementById('pont_ini').addEventListener('input', function () {
     const query = this.value;
     if (query.length > 2) {
-        searchPlaces(query, function (ponto) {
-            pontoInicial = ponto;
-            if (pontoSaida) {
-                if (control) {
-                    control.setWaypoints([pontoInicial, pontoSaida]);
-                }
-            }
+        usarPosicaoAtual = false;
+        searchPlaces(query, function (pontos) {
+            adicionarItemsNasOpcoes("#opcoes-ini", pontos, "item-ini")
         });
+
+    } else if (query.length <= 0) {
+        document.querySelector("#opcoes-ini").innerHTML = "";
+        document.querySelector("#opcoes-ini").classList.remove("active");
     }
 });
 
@@ -132,6 +132,7 @@ document.getElementById('pont_sai').addEventListener('input', function () {
         searchPlaces(query, function (pontos) {
             adicionarItemsNasOpcoes("#opcoes-saida", pontos, "item-sai")
         });
+
     } else if (query.length <= 0) {
         document.querySelector("#opcoes-saida").innerHTML = "";
         document.querySelector("#opcoes-saida").classList.remove("active");
@@ -144,6 +145,22 @@ function adicionarEventoDeCliqueNasOpcoesDeDestinoFinal() {
         opc.addEventListener("click", () => {
             const lat = opc.getAttribute("data-lat");
             const long = opc.getAttribute("data-long");
+
+            pontoInicial = L.latLng(lat, long);
+            if (pontoSaida) {
+                if (control) {
+                    control.setWaypoints([pontoInicial, pontoSaida]);
+                }
+            }
+        });
+    });
+}
+function adicionarEventoDeCliqueNasOpcoesDeDestinoInicial() {
+    const opcoes = document.querySelectorAll(".item-ini");
+    opcoes.forEach(opc => {
+        opc.addEventListener("click", () => {
+            const lat = opc.getAttribute("data-lat");
+            const long = opc.getAttribute("data-long");
             pontoSaida = L.latLng(lat, long);
             if (pontoInicial) {
                 if (control) {
@@ -151,7 +168,7 @@ function adicionarEventoDeCliqueNasOpcoesDeDestinoFinal() {
                 }
             }
         });
-    })
+    });
 }
 
 
@@ -230,5 +247,6 @@ function adicionarItemsNasOpcoes(idOpcao, items, typeClass) {
         opcoesArea.appendChild(div);
     });
     adicionarEventoDeCliqueNasOpcoesDeDestinoFinal();
+    adicionarEventoDeCliqueNasOpcoesDeDestinoInicial();
 }
 
