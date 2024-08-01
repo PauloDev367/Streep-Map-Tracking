@@ -200,11 +200,13 @@ document.getElementById('btn-buscar').addEventListener('click', function () {
 });
 
 document.getElementById('btn-iniciar').addEventListener('click', function () {
-    console.log(pontoSaida);
     if (pontoInicial && pontoSaida) {
         if (usarPosicaoAtual) {
             pontoInicial = L.latLng(latitudeAtual, longitudeAtual);
         }
+        L.marker(pontoInicial).addTo(map)
+            .bindPopup('Você precisa estar aqui!')
+            .openPopup();
         if (control) {
             control.setWaypoints([pontoInicial, pontoSaida]);
         } else {
