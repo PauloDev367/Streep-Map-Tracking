@@ -145,13 +145,13 @@ function adicionarEventoDeCliqueNasOpcoesDeDestinoFinal() {
         opc.addEventListener("click", () => {
             const lat = opc.getAttribute("data-lat");
             const long = opc.getAttribute("data-long");
-
-            pontoInicial = L.latLng(lat, long);
-            if (pontoSaida) {
+            pontoSaida = L.latLng(lat, long);
+            if (pontoInicial) {
                 if (control) {
                     control.setWaypoints([pontoInicial, pontoSaida]);
                 }
             }
+
         });
     });
 }
@@ -161,8 +161,8 @@ function adicionarEventoDeCliqueNasOpcoesDeDestinoInicial() {
         opc.addEventListener("click", () => {
             const lat = opc.getAttribute("data-lat");
             const long = opc.getAttribute("data-long");
-            pontoSaida = L.latLng(lat, long);
-            if (pontoInicial) {
+            pontoInicial = L.latLng(lat, long);
+            if (pontoSaida) {
                 if (control) {
                     control.setWaypoints([pontoInicial, pontoSaida]);
                 }
@@ -200,6 +200,7 @@ document.getElementById('btn-buscar').addEventListener('click', function () {
 });
 
 document.getElementById('btn-iniciar').addEventListener('click', function () {
+    console.log(pontoSaida);
     if (pontoInicial && pontoSaida) {
         if (usarPosicaoAtual) {
             pontoInicial = L.latLng(latitudeAtual, longitudeAtual);
